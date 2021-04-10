@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import Button from "@material-ui/core/Button";
 import { DataGrid } from "@material-ui/data-grid";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
 import BoxTop from "../../components/Pegawai/BoxTop";
-import PopUpAddPegawai from "../../components/Pegawai/PopUpAddPegawai"
+import PopUpAddPegawai from "../../components/Pegawai/PopUpAddPegawai";
 
-import pegawaiApi from '../../api/pegawai'
+import pegawaiApi from "../../api/pegawai";
 
 const columns = [
   { field: "id", headerName: "NO", width: 70 },
@@ -22,8 +24,12 @@ const columns = [
 export default function Pegawai() {
   const [open, setOpen] = useState(false);
   const [dataPegawai, setDataPegawai] = useState([]);
-  const handleClickOpen = () => {
-    setOpen(true);
+  const history = useHistory();
+  const addPegawaiBtn = () => {
+    // setOpen(true);
+    history.push({
+      pathname: "/pegawai/add",
+    });
   };
 
   const handleClose = () => {
@@ -31,14 +37,14 @@ export default function Pegawai() {
   };
 
   useEffect(() => {
-      pegawaiApi.getPegawai().then((res) => {
-          setDataPegawai(res.data);
-          console.log('resPegawai', res.data)
-      })
-  }, [])
+    pegawaiApi.getPegawai().then((res) => {
+      setDataPegawai(res.data);
+      console.log("resPegawai", res.data);
+    });
+  }, []);
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="lg">
       <BoxTop />
       <Box display="flex" flexDirection="row" justifyContent="space-between">
         <Typography
@@ -48,7 +54,9 @@ export default function Pegawai() {
         >
           Daftar Pegawai
         </Typography>
-        <PopUpAddPegawai />
+        <Button onClick={addPegawaiBtn} size="small" color="primary">
+          Tambah
+        </Button>
       </Box>
       <div style={{ height: 550, width: "100%" }}>
         <DataGrid
